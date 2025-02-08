@@ -6,6 +6,10 @@ body {
     color: #000000;
 }
 
+h2{
+    margin-bottom: 35px;
+}
+
 .header {
     display: flex;
     flex-direction: column;
