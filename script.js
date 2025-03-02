@@ -1,19 +1,57 @@
 // JavaScript to filter events based on the search query
 function filterEvents() {
     const searchValue = document.getElementById("searchBar").value.toLowerCase();
-    const rows = document.querySelectorAll(".row-box");
+    const rows = document.querySelectorAll(".row-box, .rows-box");
 
     rows.forEach(row => {
-        const eventDate = row.querySelector(".event-date")?.textContent.toLowerCase();
-        const eventName = row.querySelector(".event-name")?.textContent.toLowerCase();
+        const eventDate = row.querySelector(".event-date")?.textContent?.toLowerCase() || "";
+        const eventName = row.querySelector(".event-name")?.textContent?.toLowerCase() || "";
+        const otherName = row.querySelector(".name")?.textContent?.toLowerCase() || "";
 
-        if (eventDate.includes(searchValue) || eventName.includes(searchValue)) {
+        if (eventDate.includes(searchValue) || eventName.includes(searchValue) || otherName.includes(searchValue)) {
             row.style.display = ""; // Show matching rows
         } else {
             row.style.display = "none"; // Hide non-matching rows
         }
     });
 }
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const popup = document.getElementById("popup-modal");
+    const popupBody = document.getElementById("popup-body");
+    const closeBtn = document.querySelector(".close");
+
+    document.querySelectorAll(".rows-box").forEach(button => {
+        button.addEventListener("click", function () {
+            const fileToLoad = this.getAttribute("data-file");
+
+            fetch(fileToLoad)
+                .then(response => response.text())
+                .then(data => {
+                    popupBody.innerHTML = data;
+                    popup.style.display = "flex";
+                })
+                .catch(error => {
+                    popupBody.innerHTML = "<p>Error loading details.</p>";
+                });
+        });
+    });
+
+    closeBtn.addEventListener("click", function () {
+        popup.style.display = "none";
+    });
+
+    window.addEventListener("click", function (event) {
+        if (event.target === popup) {
+            popup.style.display = "none";
+        }
+    });
+});
+
+
+
+
 
 
 /* JavaScript to add dynamic href to each event row
