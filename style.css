@@ -81,12 +81,14 @@ a{
     width: 80px;
     text-align: left;
     font-size: 0.9rem;
+    padding: 10px;
 }
 
 .event-name {
     color: #000000;
     text-align: left;
     flex: 1;
+    padding: 10px;
     padding-left: 10px;
 }
 
