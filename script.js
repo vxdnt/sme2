@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const popupBody = document.getElementById("popup-body");
     const closeBtn = document.querySelector(".close");
 
-    document.querySelectorAll(".rows-box").forEach(button => {
+    document.querySelectorAll(".rows-box, .row-box").forEach(button => {
         button.addEventListener("click", function () {
             const fileToLoad = this.getAttribute("data-file");
 
