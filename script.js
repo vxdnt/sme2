@@ -27,13 +27,33 @@ document.addEventListener("DOMContentLoaded", function () {
             const fileToLoad = this.getAttribute("data-file");
 
             fetch(fileToLoad)
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Failed to load file");
+                    }
+                    return response.text();
+                })
                 .then(data => {
-                    popupBody.innerHTML = data;
+                    // Create a temporary element to parse the fetched content
+                    const tempDiv = document.createElement("div");
+                    tempDiv.innerHTML = data;
+
+                    // Fix relative image paths
+                    tempDiv.querySelectorAll("img").forEach(img => {
+                        const src = img.getAttribute("src");
+                        if (src && !src.startsWith("http") && !src.startsWith("data:")) {
+                            const basePath = fileToLoad.substring(0, fileToLoad.lastIndexOf("/") + 1);
+                            img.src = basePath + src;
+                        }
+                    });
+
+                    // Insert fixed content into popup
+                    popupBody.innerHTML = tempDiv.innerHTML;
                     popup.style.display = "flex";
                 })
                 .catch(error => {
                     popupBody.innerHTML = "<p>Error loading details.</p>";
+                    console.error("Error:", error);
                 });
         });
     });
